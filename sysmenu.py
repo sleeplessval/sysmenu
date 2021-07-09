@@ -48,8 +48,20 @@ def run(command):
 	Popen(command, shell = True)
 	exit()
 
-def beval(expression):
-	return check_output(f'echo {expression}', shell = True).strip()
+def beval(expression, striptype = 'both'):
+	output = check_output(f'echo "{expression}"', shell = True).decode('utf-8')
+	if striptype == 'both':
+		return output.strip()
+	elif striptype == 'right':
+		return output.rstrip()
+	elif striptype == 'left':
+		return output.lstrip()
+	elif striptype == 'none':
+		return output
+	else:
+		print(f'sysmenu: invalid strip type "{striptype}"; must be "both", "right", "left", or "none".')
+		exit(1)
+
 def font(name):
 	sec = f'font:{name}'
 	if sec not in config:
@@ -61,7 +73,10 @@ def make_button(name: str):
 	spec = config[name]
 	text = spec['text']
 	if 'eval' in spec and bool(spec['eval']):
-		text = beval(text)
+		if 'strip' in spec:
+			text = beval(text, spec['strip'])
+		else:
+			text = beval(text)
 	button = Button(
 		root,
 		text = text,
@@ -77,13 +92,18 @@ def make_button(name: str):
 		padx = padding_x,
 		pady = padding_y
 	)
+	if 'font' in spec:
+		button.configure(font = font(spec['font']))
 	components.append(button)
 
 def make_label(name: str):
 	spec = config[name]
 	text = spec['text']
 	if 'eval' in spec and bool(spec['eval']):
-		text = beval(text)
+		if 'strip' in spec:
+			text = beval(text, spec['strip'])
+		else:
+			text = beval(text)
 	label = Label(
 		root,
 		text = text
