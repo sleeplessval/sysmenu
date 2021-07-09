@@ -4,7 +4,8 @@ from os.path import expanduser
 from subprocess import check_output, Popen
 from sys import argv
 
-from tkinter import Button, Label, Frame, SINGLE, Tk
+from tkinter import Frame, SINGLE, Tk
+from tkinter import Button, Label
 
 if len(argv) != 2:
 	print("sysmenu: invalid number of arguments")
@@ -56,10 +57,10 @@ def font(name):
 	fontinfo = config[sec]
 	return (fontinfo['family'], fontinfo['size'])
 
-def make_button(name):
+def make_button(name: str):
 	spec = config[name]
 	text = spec['text']
-	if('eval' in spec and bool(spec['eval'])):
+	if 'eval' in spec and bool(spec['eval']):
 		text = beval(text)
 	button = Button(
 		root,
@@ -78,10 +79,10 @@ def make_button(name):
 	)
 	components.append(button)
 
-def make_label(name):
+def make_label(name: str):
 	spec = config[name]
 	text = spec['text']
-	if('eval' in spec):
+	if 'eval' in spec and bool(spec['eval']):
 		text = beval(text)
 	label = Label(
 		root,
