@@ -10,7 +10,7 @@ The `global` section can be used to define general styling. this includes:
 
 `background`: hex color
 `foreground`: hex color
-`highlight`: hex color (color on hover)
+`highlight`: hex color, color on hover
 `padding_x`: integer
 `padding_y`: integer
 
@@ -36,6 +36,7 @@ All components have the following properties:
 Buttons are defined in a section that starts with `button:`, and perform an action when clicked. They're also highlighted on hover. They have the following extra properties:
 
 `command`: the shell command to run on click
+`condition`: an evaluated expression that returns "true" if the button should be enabled.
 
 #### Label
 

@@ -94,6 +94,10 @@ def make_button(name: str):
 	)
 	if 'font' in spec:
 		button.configure(font = font(spec['font']))
+	if 'condition' in spec:
+		state = beval(spec['condition']);
+		if state.lower() != "true":
+			button['state'] = 'disabled'
 	components.append(button)
 
 def make_label(name: str):
